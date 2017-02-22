@@ -3,6 +3,7 @@ package springcache.services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
@@ -24,12 +25,17 @@ public class CachableBookService {
     return book;
   }
 
-  @CachePut(value="book", key="#book.isbn")
+  @CachePut(value = "book", key = "#book.isbn")
   public Book save(Book book) {
     LOGGER.info("BookService, saving book {}", book);
     book = bookRepository.save(book);
     LOGGER.info("BookService, save done");
     return book;
+  }
+
+  @CacheEvict(value = "book", allEntries = true)
+  public void cacheEvict() {
+    LOGGER.info("BookService, cache evicted");
   }
 
   private void simulateSlowService() {

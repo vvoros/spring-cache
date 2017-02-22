@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
 import springcache.services.Book;
 import springcache.services.CachableBookService;
 
@@ -39,6 +38,12 @@ public class WorkerController {
     Book book = new Book(isbn, "Title");
     bookService.save(book);
     LOGGER.info("Controller, book saved: {}", book);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  @GetMapping(value = "books")
+  public ResponseEntity<Void> evictBooks() {
+    bookService.cacheEvict();
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
