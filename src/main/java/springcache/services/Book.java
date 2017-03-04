@@ -1,8 +1,10 @@
 package springcache.services;
 
+import java.io.Serializable;
+
 import org.springframework.data.annotation.Id;
 
-public class Book {
+public class Book implements Serializable {
 
   @Id
   private String isbn;
